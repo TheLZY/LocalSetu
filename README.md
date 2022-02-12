@@ -1,6 +1,6 @@
-# LocalSetu
+# LocalSetu 魔改版
 
-基于HoshinoBot v2的本地setu插件
+基于HoshinoBot v2的本地setu插件的本地魔改版
 
 ## 特点
 
@@ -8,48 +8,40 @@
 - [x] 支持所有用户上传图片，提交删除图片申请，共同维护色图库
 - [x] 支持按上传者，ID，TAG等模糊查询色图
 - [x] 支持并发上传时自定义每张TAG
-- [x] 自动审核上传图片，未通过自动提交申请
-- [x] 自动获取上传图片P站id，中日文tag，是否r18，原图文件
-- [x] 自动检测重复色图（以P站id及md5作唯一性约束）
-- [x] 优化指令，空参时自动进入上传、审核模式，方便手机端操作
-- [x] 权限分离，普通用户无权进行敏感操作，全申请均可自动推送至审核人员
+- [x] ~~自动过审上传图片，未通过自动提交申请~~
+- [x] ~~自动获取上传图片P站id，中日文tag，是否r18，原图文件~~
+- [x] 自动检测重复色图（以~~P站id及~~md5作唯一性约束）
+- [x] ~~优化指令，空参时自动进入上传、审核模式，方便手机端操作~~
+- [x] 权限分离，普通用户无权进行敏感操作，~~全申请均可自动推送至审核人员~~
 - [x] 支持反和谐
 - [x] 多线程并发，大幅优化效率
 - [x] 数据存储基于sqlite，更加轻量
-- [x] 支持上传男同图，指令区分（不是
+- [x] ~~支持上传男同图，指令区分（不是~~
+
+## 修改内容
+
+* 自动过审， 删除P站自动审核，获取TAG功能
+
+* 审核权限设置为群主和群管理员  ~~（删图工具人）~~
+
+* 删掉了发图的 at，改用群昵称
+
+  
+
+
 
 ## 首次部署
 
-1. 在HoshinoBot的插件目录modules下clone本项目 `git clone https://github.com/benx1n/LocalSetu.git`
-2. 在项目文件夹下执行`pip install -r requirements.txt`安装依赖
-3. 获取[sauceNAO apikey](https://saucenao.com/)及[Pixiv refresh_token](https://gist.github.com/upbit/6edda27cb1644e94183291109b8a5fde)
-*   windows环境（其他环境您也可以在windows上得到refresh token后给服务器使用）
-    >在项目文件夹下执行
-    >```
-    >pip install selenium
-    >python pixiv_auth.py login
-    >```
-    >可能会出现Cloudflare验证，手动验证或切换其他代理即可通过<br>
-    >成功后会在窗口内自动显示`refresh_token`<br>
-    >注：如果在墙内访问，请**手动设置** `REQUESTS_KWARGS.proxies` 的代理，不然获取code后无法正确提交请求到Pixiv(现象是 `[INFO] Get code: xxxxx` 后一直卡住，未requests配置代理即可)
+1. 在HoshinoBot的插件目录modules下clone本项目 `git clone https://github.com/TheLZY/LocalSetu.git`
 
+2. 在项目文件夹下执行`pip install -r requirements.txt`安装依赖
+
+   （如果安装requirements的时候有一个包有问题，那就安装requirements2.txt）
+
+3. ~~获取[sauceNAO apikey](https://saucenao.com/)及[Pixiv refresh_token](https://gist.github.com/upbit/6edda27cb1644e94183291109b8a5fde)~~
 
 4. 将配置文件 `config_default.json` 重命名为 `config.json` , 修改配置文件中的设置<br>
-*   若您不准备使用代理，且能正常访问sauceNAO，请在setu.py中作下列修改（若您不能访问sauceNAO，请将配置文件中的on设置为0）
-    >删除get_pixiv_id函数中的`,**_REQUESTS_KWARGS`<br>
-    >修改get_pixiv_tag_url函数中如下部分
-    >```        
-    >api = AppPixivAPI()
-    >api.set_accept_language('zh-cn')
-    >api.auth(refresh_token=refresh_token)
-    >```
-    >更变为
-    >```        
-    >api = ByPassSniApi()
-    >api.require_appapi_hosts(hostname="public-api.secure.pixiv.net")
-    >api.set_accept_language('zh-cn')
-    >api.auth(refresh_token=refresh_token)
-    >```
+*   ~~若您不准备使用代理，且能正常访问sauceNAO，请在setu.py中作下列修改（若您不能访问sauceNAO，请将配置文件中的on设置为0）~~
 5. 将数据库文件`demo.db`重命名为`LocalSetu.db`
 5. 在 `config/__bot__.py`的模块列表里加入 `LocalSetu`
 6. 重启hoshinoBot
@@ -96,6 +88,7 @@
     >return deco
     >```
 ## 指令说明
+
 |  指令   | 必要参数  |可选参数|说明|
 |  :----  | :----  | :---- |:----|
 | **kkqyxp<br>kkntxp**|无| ID,@上传者,TAG |随机发送色图/男同图|
@@ -116,14 +109,21 @@
 |**快速审核**|**[ID]**|无|快速通过指定ID的申请（默认保留）|
 |**重新自动审核<br>重新获取TAG**|**起始ID**|无|重新审核/获取TAG，适用于首次上传由于SauceNAO接口限制而导致的批量自动审核失败|
 
-## TODO
+## 一点碎碎念
 
-- [x] 改用Sqlite
-- [ ] WEB控制台
-- [ ] 在线图库API
-- [ ] 更自由的组合条件查询
-- [ ] 自动审核方式改为炼丹
-- [ ] 优化无代理模式
+ 因为pixiv的token死活弄不上，干脆摆了
+
+审核不审核的无所谓，主要还是相信群友（bushi
+
+Tag什么的自己加都好，反正群友都不难受，他只要自由~ （bushi
+
+不过似乎私聊上传图片有时候会会有Bug？ 再说吧
+
+
+
+![摆了](摆了.jpg)
+
+
 
 ## 感谢
 
